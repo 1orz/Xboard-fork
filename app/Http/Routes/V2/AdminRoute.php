@@ -16,6 +16,7 @@ use App\Http\Controllers\V2\Admin\TicketController;
 use App\Http\Controllers\V2\Admin\CouponController;
 use App\Http\Controllers\V2\Admin\GiftCardController;
 use App\Http\Controllers\V2\Admin\KnowledgeController;
+use App\Http\Controllers\V2\Admin\OAuthProviderController;
 use App\Http\Controllers\V2\Admin\PaymentController;
 use App\Http\Controllers\V2\Admin\SystemController;
 use App\Http\Controllers\V2\Admin\ThemeController;
@@ -292,6 +293,18 @@ class AdminRoute
                 $router->get('stats', [TrafficResetController::class, 'stats']);
                 $router->get('user/{userId}/history', [TrafficResetController::class, 'userHistory']);
                 $router->post('reset-user', [TrafficResetController::class, 'resetUser']);
+            });
+
+            // OAuth / OIDC providers
+            $router->group([
+                'prefix' => 'oauth-provider'
+            ], function ($router) {
+                $router->get('/fetch', [OAuthProviderController::class, 'fetch']);
+                $router->post('/save', [OAuthProviderController::class, 'save']);
+                $router->post('/drop', [OAuthProviderController::class, 'drop']);
+                $router->post('/show', [OAuthProviderController::class, 'show']);
+                $router->post('/sort', [OAuthProviderController::class, 'sort']);
+                $router->post('/discover', [OAuthProviderController::class, 'discover']);
             });
         });
 

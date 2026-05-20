@@ -3,6 +3,7 @@ namespace App\Http\Routes\V1;
 
 use App\Http\Controllers\V1\Passport\AuthController;
 use App\Http\Controllers\V1\Passport\CommController;
+use App\Http\Controllers\V1\Passport\OAuthController;
 use Illuminate\Contracts\Routing\Registrar;
 
 class PassportRoute
@@ -22,6 +23,13 @@ class PassportRoute
             // Comm
             $router->post('/comm/sendEmailVerify', [CommController::class, 'sendEmailVerify']);
             $router->post('/comm/pv', [CommController::class, 'pv']);
+
+            // OAuth / OIDC
+            $router->group(['prefix' => 'oauth'], function ($router) {
+                $router->get('/providers', [OAuthController::class, 'index']);
+                $router->get('/{identifier}/redirect', [OAuthController::class, 'redirect']);
+                $router->match(['get', 'post'], '/{identifier}/callback', [OAuthController::class, 'callback']);
+            });
         });
     }
 }
