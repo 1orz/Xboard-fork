@@ -3,6 +3,7 @@ namespace App\Http\Routes\V1;
 
 use App\Http\Controllers\V1\User\CommController;
 use App\Http\Controllers\V1\User\CouponController;
+use App\Http\Controllers\V1\User\OAuthController;
 use App\Http\Controllers\V1\User\GiftCardController;
 use App\Http\Controllers\V1\User\InviteController;
 use App\Http\Controllers\V1\User\KnowledgeController;
@@ -78,6 +79,10 @@ class UserRoute
             $router->get('/knowledge/getCategory', [KnowledgeController::class, 'getCategory']);
             // Stat
             $router->get('/stat/getTrafficLog', [StatController::class, 'getTrafficLog']);
+            // OAuth bind management
+            $router->get('/oauth/list', [OAuthController::class, 'list']);
+            $router->post('/oauth/unbind', [OAuthController::class, 'unbind']);
+            $router->post('/oauth/confirmBindCandidate', [OAuthController::class, 'confirmBindCandidate']);
         });
     }
 }
