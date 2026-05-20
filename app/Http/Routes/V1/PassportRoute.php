@@ -27,6 +27,7 @@ class PassportRoute
             // OAuth / OIDC
             $router->group(['prefix' => 'oauth'], function ($router) {
                 $router->get('/providers', [OAuthController::class, 'index']);
+                $router->post('/verify', [OAuthController::class, 'verify']);
                 $router->get('/{identifier}/redirect', [OAuthController::class, 'redirect']);
                 $router->match(['get', 'post'], '/{identifier}/callback', [OAuthController::class, 'callback']);
             });
