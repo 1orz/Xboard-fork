@@ -154,6 +154,14 @@ class User extends Authenticatable
     }
 
     /**
+     * 关联第三方登录身份（OIDC）
+     */
+    public function oauthIdentities(): HasMany
+    {
+        return $this->hasMany(UserOAuthIdentity::class, 'user_id', 'id');
+    }
+
+    /**
      * 检查用户是否处于活跃状态
      */
     public function isActive(): bool
