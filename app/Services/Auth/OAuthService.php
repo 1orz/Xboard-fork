@@ -262,6 +262,8 @@ class OAuthService
 
     /**
      * 登录意图：根据现有 identity / 邮箱命中 / allow_register 决定下一步。
+     * options:
+     *   block_register: bool  强制跳过注册分支（admin flow 用），无论 provider.allow_register 是什么
      * 返回:
      *   ['kind'=>'exists', 'user'=>User]
      *   ['kind'=>'email_conflict', 'email'=>string, 'candidate_token'=>string]
@@ -269,7 +271,7 @@ class OAuthService
      *   ['kind'=>'register_blocked']
      *   ['kind'=>'no_email']    // 远端没给 email 又没现有 binding，无法判断
      */
-    public function handleLogin(OAuthProvider $provider, array $profile): array
+    public function handleLogin(OAuthProvider $provider, array $profile, array $options = []): array
     {
         $existing = UserOAuthIdentity::where('provider_id', $provider->id)
             ->where('sub', $profile['sub'])
@@ -311,7 +313,7 @@ class OAuthService
             ];
         }
 
-        if (!$provider->allow_register) {
+        if (!$provider->allow_register || !empty($options['block_register'])) {
             return ['kind' => 'register_blocked'];
         }
 
