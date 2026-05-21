@@ -20,7 +20,8 @@ class KnowledgeController extends Controller
                 return $this->fail([400202, '知识不存在']);
             return $this->success($knowledge);
         }
-        $data = Knowledge::select(['title', 'id', 'updated_at', 'category', 'show'])
+        // 列表不带 body（避免 payload 大），但要带 language / sort，否则前端列表显示空
+        $data = Knowledge::select(['id', 'title', 'category', 'language', 'sort', 'show', 'updated_at'])
             ->orderBy('sort', 'ASC')
             ->get();
         return $this->success($data);
